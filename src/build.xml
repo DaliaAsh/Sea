@@ -1,39 +1,44 @@
-<project name="Sea" basedir="." default="main">
+<project  default = "compile">
+ <property name = "src.java.dir" location = "./src"/>
+ <property name = "src.test.dir" location = "./src/main/test"/>
+ <property name = "result.dir" location = "./target"/>
+ <property name = "result.javaclasses.dir" location = "${result.dir}/classes"/>
+ <property name = "result.testclasses.dir" location = "${result.dir}/testclasses"/>
+ <property name = "result.jar.file" location = "./src.jar"/>
 
-    <property name="src.dir"     value="src"/>
+<target name = "compile">
+<mkdir dir ="${result.javaclasses.dir}" />
+<javac srcdir ="${src.java.dir}"  destdir = "${result.javaclasses.dir}" debug = "true" includeantruntime = "false">
+</javac>
 
-    <property name="build.dir"   value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="jar.dir"     value="${build.dir}/jar"/>
+</target>
 
-    <property name="main-class"  value="Sea.Sea"/>
-
+<target name = "jar" depends = "compile">
+<jar dstfile = "${result.jar.file}">
 
 
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
+<fileset dir = "${result.javaclasses.dir}"></fileset>
 
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
-    </target>
 
-    <target name="jar" depends="compile">
-        <mkdir dir="${jar.dir}"/>
-        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
-            <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
-            </manifest>
-        </jar>
-    </target>
 
-    <target name="run" depends="jar">
-        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
-    </target>
 
-    <target name="clean-build" depends="clean,jar"/>
 
-    <target name="main" depends="clean,run"/>
+</jar>
+
+
+
+
+
+
+</target>
+
+
+
+
+
+
+
+
+
 
 </project>
